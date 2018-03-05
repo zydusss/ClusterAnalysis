@@ -1,0 +1,105 @@
+---
+title: "R Notebook"
+author: "Rahul Bajaj"
+date: "2 March 2018"
+output: html_document
+---
+
+
+
+
+```{r}
+data(mtcars)
+dimnames(mtcars)
+mtcars.scale=scale(mtcars)
+head(mtcars.scale)
+```
+
+
+```{r}
+dist.res=dist(mtcars.scale, method='euclidean')
+```
+
+
+
+
+### Hierarchical Clustering
+
+```{r}
+hc=hclust(dist.res, method="complete")
+hc
+```
+
+
+
+#### Visual : Hierarichal Cluster
+```{r}
+plot(hc, labels=FALSE, hang=-1)
+```
+
+
+#### Visual : Hierarichal Cluster [Add Rectangle boundaries]
+```{r}
+plot(hc, labels=FALSE, hang=-1)
+# Add rectagle around 4 groups
+rect.hclust(hc, k=4, border=2:4)
+```
+
+
+
+
+#### Visual : Hierarichal Cluster
+```{r}
+plot(hc, labels=FALSE, hang=-1)
+# Add rectagle around 4 groups
+rect.hclust(hc, k=4)
+```
+
+
+
+
+# Kmeans Clustering
+
+```{r}
+wss=(nrow(mtcars.scale)-1)*sum(apply(mtcars.scale,2,var))
+
+for(i in 2:15)
+{
+  wss[i]=sum(kmeans(mtcars.scale, centers=i)$withinss)
+  }
+
+set.seed(20)
+
+```
+
+
+```{r}
+plot(1:15,wss, type="b", xlab="No. of Clusters", ylab="Within Group Sum of Squares ")
+```
+
+
+#### Analysing cluster results
+
+
+```{r}
+set.seed(20)
+mtcarsCluster= kmeans(mtcars.scale, 4)
+mtcarsCluster
+```
+
+
+```{r}
+Results= cbind.data.frame(mtcars,cluster=mtcarsCluster$cluster)
+Results[order(Results$cluster),]
+
+```
+
+
+```{r}
+# Example of labeling points
+attach(Results)
+plot(wt, mpg, main="Milage vs. Car Weight", 
+  	xlab="Weight", ylab="Mileage", pch=18, col=cluster)
+
+text(wt, mpg, row.names(Results), cex=0.8, pos=4, col=cluster)
+```
