@@ -1,3 +1,1 @@
-## Cluster Analysis Using R
-
-[editor on GitHub](https://github.com/zydusss/ClusterAnalysis/edit/master/README.md) 
+## [Cluster Analysis Using R](https://nbviewer.jupyter.org/github/zydusss/ClusterAnalysis/blob/master/Cluster_Analysis.html) 
